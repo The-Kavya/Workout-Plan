@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Train Every Day — Kavya's Workout Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+[data-theme="dark"]{
+  --bg:#0A0C0A;--bg2:#111510;--bg3:#171D14;
+  --card:#1A2118;--card2:#1F2820;
+  --border:#2A3828;--border2:#334530;
+  --accent1:#7EC87A;--accent2:#E8937A;--accent3:#C4A882;
+  --text:#EDE9E0;--text2:#9FAF97;--text3:#566650;
+  --badge-m-bg:#E8937A18;--badge-m-c:#E8937A;--badge-m-b:#E8937A35;
+  --badge-e-bg:#7EC87A18;--badge-e-c:#7EC87A;--badge-e-b:#7EC87A35;
+  --run-bg:#C4A88218;--run-c:#C4A882;--run-b:#C4A88235;
+  --stat-val:#7EC87A;
+  --tab-active-bg:#7EC87A;--tab-active-c:#0A0C0A;
+  --dot-hi:#E8937A;--dot-med:#C4A882;--dot-lo:#7EC87A;
+  --sets-c:#7EC87A;--hero-tag:#7EC87A;--footer-c:#566650;
+  --hero-bg:radial-gradient(ellipse 65% 55% at 88% 8%,#7EC87A14 0%,transparent 58%),radial-gradient(ellipse 50% 45% at 12% 92%,#E8937A10 0%,transparent 58%),#0A0C0A;
+}
+[data-theme="bw"]{
+  --bg:#FFFFFF;--bg2:#F7F7F7;--bg3:#F0F0F0;
+  --card:#FFFFFF;--card2:#F3F3F3;
+  --border:#E2E2E2;--border2:#C4C4C4;
+  --accent1:#000000;--accent2:#000000;--accent3:#555555;
+  --text:#0A0A0A;--text2:#444444;--text3:#999999;
+  --badge-m-bg:#0000000D;--badge-m-c:#111111;--badge-m-b:#00000022;
+  --badge-e-bg:#0000000D;--badge-e-c:#111111;--badge-e-b:#00000022;
+  --run-bg:#0000000D;--run-c:#111111;--run-b:#00000022;
+  --stat-val:#000000;
+  --tab-active-bg:#000000;--tab-active-c:#FFFFFF;
+  --dot-hi:#111111;--dot-med:#666666;--dot-lo:#999999;
+  --sets-c:#000000;--hero-tag:#444444;--footer-c:#AAAAAA;
+  --hero-bg:#FFFFFF;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
+
+/* THEME TOGGLE */
+.toggle-wrap{position:fixed;top:20px;right:20px;z-index:300;display:flex;flex-direction:column;align-items:center;gap:5px}
+.toggle-btn{
+  width:56px;height:30px;border-radius:30px;
+  border:1.5px solid var(--border2);background:var(--card);
+  cursor:pointer;display:flex;align-items:center;padding:3px;
+  transition:all .35s;box-shadow:0 4px 20px #00000030;
+}
+.toggle-thumb{
+  width:22px;height:22px;border-radius:50%;
+  transition:transform .35s cubic-bezier(.4,0,.2,1),background .35s;
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+}
+[data-theme="dark"] .toggle-thumb{background:var(--accent1);transform:translateX(0)}
+[data-theme="bw"]   .toggle-thumb{background:#000;transform:translateX(24px)}
+.toggle-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);font-family:'DM Mono',monospace;transition:color .35s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:5rem 3rem 4rem;position:relative;overflow:hidden;background:var(--hero-bg);transition:background .4s}
+.hero-grid-lines{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.35;transition:opacity .4s}
+[data-theme="bw"] .hero-grid-lines{opacity:.55}
+.hero-ghost{position:absolute;bottom:-80px;right:-10px;font-family:'Cormorant Garamond',serif;font-size:clamp(180px,28vw,340px);font-weight:300;font-style:italic;color:var(--border);line-height:1;pointer-events:none;user-select:none;letter-spacing:-10px;transition:color .4s}
+.hero-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--hero-tag);font-family:'DM Mono',monospace;margin-bottom:1.5rem;display:flex;align-items:center;gap:12px;animation:slideUp .7s .1s both}
+.hero-tag::before{content:'';width:30px;height:1px;background:currentColor}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(70px,13vw,140px);font-weight:300;line-height:.92;letter-spacing:-2px;margin-bottom:2rem;animation:slideUp .7s .25s both}
+.hero-h1 em{font-style:italic;color:var(--accent2)}
+.hero-h1 .outline{-webkit-text-stroke:1.5px var(--text);color:transparent;transition:-webkit-text-stroke .4s}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap;animation:slideUp .7s .4s both}
+.pill{border:1px solid var(--border2);border-radius:40px;padding:7px 16px;font-size:12px;color:var(--text2);background:var(--bg2);transition:all .3s;letter-spacing:.5px}
+.pill b{color:var(--text);font-weight:600}
+
+/* MAIN */
+.main{max-width:1080px;margin:0 auto;padding:4rem 2.5rem 6rem}
+@media(max-width:600px){.main{padding:2.5rem 1.25rem 4rem}.hero{padding:4rem 1.5rem 3rem}}
+
+/* SECTION HEAD */
+.sec-head{display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem}
+.sec-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:2px}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,38px);font-weight:300;font-style:italic}
+.sec-line{flex:1;height:1px;background:var(--border);transition:background .4s}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:3.5rem 0}
+@media(max-width:480px){.stats{grid-template-columns:1fr 1fr}}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.1rem;text-align:center;transition:border-color .3s,background .4s}
+.stat:hover{border-color:var(--border2)}
+.stat-v{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--stat-val);line-height:1;transition:color .4s}
+.stat-l{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-top:4px;transition:color .4s}
+
+/* WARMUP */
+.warmup-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:5rem}
+@media(max-width:600px){.warmup-grid{grid-template-columns:1fr}}
+.wcard{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:border-color .3s,background .4s}
+.wcard:hover{border-color:var(--border2)}
+.wcard-top{padding:1.25rem 1.5rem .9rem;border-bottom:1px solid var(--border)}
+.wcard-type{font-size:9px;letter-spacing:3px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:.5rem;display:flex;align-items:center;gap:8px;transition:color .4s}
+.wcard-type::before{content:'';width:20px;height:1.5px;border-radius:2px;background:currentColor}
+.wcard.wrun .wcard-type{color:var(--accent2)}
+.wcard.wwk  .wcard-type{color:var(--accent1)}
+.wcard-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400}
+.wrow{display:flex;justify-content:space-between;align-items:center;padding:9px 1.5rem;border-bottom:1px solid var(--border);font-size:13px;transition:background .12s}
+.wrow:last-child{border-bottom:none}
+.wrow:hover{background:var(--bg2)}
+.wrow-n{font-weight:500}
+.wrow-d{color:var(--text3);font-family:'DM Mono',monospace;font-size:11px;transition:color .4s}
+
+/* DAY TABS */
+.day-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem}
+.dtab{padding:10px 18px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-family:'Syne',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.dtab:hover:not(.active){background:var(--card2);border-color:var(--border2);color:var(--text)}
+.dtab.active{background:var(--tab-active-bg);color:var(--tab-active-c);border-color:var(--tab-active-bg)}
+.dtab .dn{display:block;font-size:15px;font-weight:700}
+.dtab .dl{display:block;font-size:10px;opacity:.7;margin-top:1px;letter-spacing:.5px}
+
+.irow{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:.5px;margin-bottom:1.1rem;transition:color .4s}
+.idot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.run-rib{display:inline-flex;align-items:center;gap:8px;background:var(--run-bg);color:var(--run-c);border:1px solid var(--run-b);border-radius:30px;padding:5px 14px;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:1.5rem;transition:all .4s}
+.run-rib::before{content:'▶';font-size:8px}
+
+/* SESSION CARDS */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.sg{grid-template-columns:1fr}}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:border-color .3s,transform .2s,background .4s}
+.sc:hover{border-color:var(--border2);transform:translateY(-3px)}
+.sc-head{padding:1rem 1.25rem .85rem;border-bottom:1px solid var(--border);transition:border-color .4s}
+.sbadge{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;font-family:'DM Mono',monospace;display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:.65rem;border:1px solid}
+.sbadge.morning{background:var(--badge-m-bg);color:var(--badge-m-c);border-color:var(--badge-m-b)}
+.sbadge.evening{background:var(--badge-e-bg);color:var(--badge-e-c);border-color:var(--badge-e-b)}
+.sc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.1;margin-bottom:3px}
+.sc-focus{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:.4px;transition:color .4s}
+.exrow{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 1.25rem;border-bottom:1px solid var(--border);gap:10px;transition:background .12s}
+.exrow:last-of-type{border-bottom:none}
+.exrow:hover{background:var(--bg2)}
+.ex-n{font-size:13.5px;font-weight:500;margin-bottom:2px}
+.ex-d{font-size:11.5px;color:var(--text3);transition:color .4s}
+.ex-s{font-size:12px;font-weight:600;color:var(--sets-c);font-family:'DM Mono',monospace;white-space:nowrap;padding-top:2px;transition:color .4s}
+.sc-foot{padding:.65rem 1.25rem;border-top:1px solid var(--border);font-size:11px;color:var(--text3);background:var(--bg2);font-family:'DM Mono',monospace;transition:all .4s}
+
+/* ANIM */
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeIn .3s ease both}
+
+footer{text-align:center;padding:2.5rem 1rem;font-size:11px;color:var(--footer-c);border-top:1px solid var(--border);font-family:'DM Mono',monospace;letter-spacing:1px;transition:all .4s}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="toggle-wrap">
+  <button class="toggle-btn" onclick="toggleTheme()" title="Toggle theme">
+    <div class="toggle-thumb" id="thumb"></div>
+  </button>
+  <span class="toggle-label" id="tlabel">DARK</span>
+</div>
+
+<div class="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-ghost">RUN</div>
+  <div class="hero-tag">7-day plan · no rest · bodyweight + bricks</div>
+  <h1 class="hero-h1">Train.<br><em>Every</em><br><span class="outline">Day.</span></h1>
+  <div class="hero-pills">
+    <div class="pill">60 min <b>/ day</b></div>
+    <div class="pill">5 km <b>daily run</b></div>
+    <div class="pill">Level <b>Intermediate</b></div>
+    <div class="pill">Goal <b>Strength + Stamina</b></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="stats">
+    <div class="stat"><div class="stat-v">7</div><div class="stat-l">Days/week</div></div>
+    <div class="stat"><div class="stat-v">60</div><div class="stat-l">Mins/day</div></div>
+    <div class="stat"><div class="stat-v">5</div><div class="stat-l">km / run</div></div>
+    <div class="stat"><div class="stat-v">0</div><div class="stat-l">Rest days</div></div>
+  </div>
+
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Warm-Up Routines</h2><div class="sec-line"></div></div>
+
+  <div class="warmup-grid">
+    <div class="wcard wrun">
+      <div class="wcard-top"><div class="wcard-type">Before Running</div><div class="wcard-title">Running Prep</div></div>
+      <div class="wrow"><span class="wrow-n">Ankle Circles (each side)</span><span class="wrow-d">30 sec</span></div>
+      <div class="wrow"><span class="wrow-n">Leg Swings (front-back)</span><span class="wrow-d">20 each</span></div>
+      <div class="wrow"><span class="wrow-n">Hip Circles</span><span class="wrow-d">20 each way</span></div>
+      <div class="wrow"><span class="wrow-n">Marching Knee Raises</span><span class="wrow-d">30 sec</span></div>
+      <div class="wrow"><span class="wrow-n">Butt Kicks</span><span class="wrow-d">30 sec</span></div>
+      <div class="wrow"><span class="wrow-n">Slow Calf Raises</span><span class="wrow-d">15 reps</span></div>
+      <div class="wrow"><span class="wrow-n">Brisk Walk → Easy Jog</span><span class="wrow-d">2 min</span></div>
+    </div>
+    <div class="wcard wwk">
+      <div class="wcard-top"><div class="wcard-type">Before Workout</div><div class="wcard-title">Workout Prep</div></div>
+      <div class="wrow"><span class="wrow-n">Arm Circles (each dir.)</span><span class="wrow-d">20 reps</span></div>
+      <div class="wrow"><span class="wrow-n">Shoulder Cross Swings</span><span class="wrow-d">20 reps</span></div>
+      <div class="wrow"><span class="wrow-n">Torso Rotations</span><span class="wrow-d">20 each</span></div>
+      <div class="wrow"><span class="wrow-n">Slow Bodyweight Squats</span><span class="wrow-d">10 reps</span></div>
+      <div class="wrow"><span class="wrow-n">Hip Flexor Stretch</span><span class="wrow-d">30 sec each</span></div>
+      <div class="wrow"><span class="wrow-n">Inchworm Walkouts</span><span class="wrow-d">5 reps</span></div>
+      <div class="wrow"><span class="wrow-n">Jumping Jacks</span><span class="wrow-d">30 sec</span></div>
+    </div>
+  </div>
+
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Weekly Plan</h2><div class="sec-line"></div></div>
+
+  <div class="day-tabs" id="tabs"></div>
+  <div class="irow" id="irow"></div>
+  <div class="run-rib" id="runrib"></div>
+  <div id="content"></div>
+
+</div>
+
+<footer>Crafted for Kavya &nbsp;·&nbsp; Train hard, run free &nbsp;·&nbsp; 7 days, no excuses.</footer>
+
+<script>
+const P=[
+  {day:"Mon",label:"Chest & Arms",intensity:"high",
+   M:{title:"Push Power",focus:"Chest · Triceps · Shoulders",badge:"morning",ex:[
+    ["Push-ups","Wide grip — full chest stretch","4 × 15"],
+    ["Diamond Push-ups","Triceps isolation, elbows tight","3 × 12"],
+    ["Pike Push-ups","Hips high, shoulder press motion","3 × 10"],
+    ["Brick Floor Press","Lying flat, full range","4 × 12"],
+    ["Tricep Dips","Use chair or low surface","3 × 15"]
+   ],rest:"45 sec/set · 90 sec between exercises"},
+   E:{title:"Biceps & Core",focus:"Biceps · Abs · Core",badge:"evening",ex:[
+    ["Brick Dumbbell Curls","Slow up, controlled down","4 × 15"],
+    ["Hammer Curls","Neutral grip, both arms","3 × 12"],
+    ["Plank Hold","Breathe steady, hips level","4 × 45 sec"],
+    ["Crunches","No neck pull, exhale at top","3 × 20"],
+    ["Leg Raises","Lower abs, slow down phase","3 × 15"]
+   ],rest:"30 sec/set · 60 sec between exercises"},
+  },
+  {day:"Tue",label:"Legs & Glutes",intensity:"high",
+   M:{title:"Leg Strength",focus:"Quads · Glutes · Hamstrings",badge:"morning",ex:[
+    ["Bodyweight Squats","Deep and controlled, 3 sec down","4 × 20"],
+    ["Brick Dumbbell Squats","Hold bricks at sides for load","3 × 15"],
+    ["Walking Lunges","Full stride, knee near floor","4 × 12 each"],
+    ["Glute Bridges","2 sec hold at top, squeeze hard","4 × 20"],
+    ["Calf Raises","Single leg for extra challenge","3 × 25"]
+   ],rest:"60 sec/set · 90 sec between exercises"},
+   E:{title:"Cardio & Stamina",focus:"Endurance · Full Body Burn",badge:"evening",ex:[
+    ["Jumping Jacks","Full range, fast pace","3 × 1 min"],
+    ["High Knees","Drive knees chest-height","3 × 45 sec"],
+    ["Burpees","Full movement, controlled pace","3 × 10"],
+    ["Mountain Climbers","Core tight, fast legs","3 × 40 sec"],
+    ["Jump Squats","Explosive up, soft landing","3 × 12"]
+   ],rest:"30 sec between rounds · Keep heart rate up"},
+  },
+  {day:"Wed",label:"Back & Shoulders",intensity:"high",
+   M:{title:"Pull & Press",focus:"Back · Shoulders · Posture",badge:"morning",ex:[
+    ["Brick Bent-Over Rows","Hinge at hip, squeeze blade","4 × 15"],
+    ["Overhead Press","Bricks overhead, full lockout","4 × 12"],
+    ["Lateral Raises","Arms to 90°, slow and controlled","3 × 15"],
+    ["Reverse Fly","Bent over, open arms wide","3 × 12"],
+    ["Superman Hold","Face down, lift chest and legs","3 × 12"]
+   ],rest:"45 sec/set · 90 sec between exercises"},
+   E:{title:"Core & Stability",focus:"Core · Balance · Abs",badge:"evening",ex:[
+    ["Plank Shoulder Taps","Alternate hands, hips still","3 × 20 taps"],
+    ["Russian Twists","Hold brick for resistance","4 × 20"],
+    ["Bicycle Crunches","Slow and controlled rotation","3 × 20"],
+    ["Dead Bug","Opposite arm & leg, breathe out","3 × 10 each"],
+    ["Side Plank","Hold each side, hips lifted","3 × 30 sec each"]
+   ],rest:"30 sec/set · Focus on form over speed"},
+  },
+  {day:"Thu",label:"Core + Mobility",intensity:"low",
+   M:{title:"Gentle Core",focus:"Core · Hip Mobility · Light",badge:"morning",ex:[
+    ["Cat-Cow Stretch","Slow breath-linked movement","2 × 12"],
+    ["Bird-Dog","Opposite arm and leg extend","3 × 10 each"],
+    ["Glute Bridge Hold","3 sec holds, gentle activation","3 × 15"],
+    ["Dead Bug (slow)","Core stays flat, breathe out","3 × 8 each"],
+    ["Easy Plank","Comfortable hold, not max effort","3 × 30 sec"]
+   ],rest:"45 sec/set · Easy, no rush"},
+   E:{title:"Full Mobility",focus:"Recovery · Flexibility · Breathing",badge:"evening",ex:[
+    ["World's Greatest Stretch","Lunge with rotation, each side","2 × 5 each"],
+    ["Hip Flexor Stretch","Low lunge, hold and breathe","2 × 45 sec each"],
+    ["Child's Pose","Breathe deep, let hips drop","2 × 60 sec"],
+    ["Seated Hamstring Stretch","Reach for toes, hold steady","2 × 45 sec each"],
+    ["Chest Opener","Arms wide, gentle arch back","2 × 40 sec"]
+   ],rest:"No rush · Hold each stretch fully · Breathe slow"},
+  },
+  {day:"Fri",label:"Full Push Day",intensity:"high",
+   M:{title:"Chest & Triceps",focus:"Chest · Triceps · Shoulders",badge:"morning",ex:[
+    ["Incline Push-ups","Feet on chair, upper chest focus","4 × 15"],
+    ["Wide Push-ups","Deep range, elbows flared","3 × 15"],
+    ["Brick Floor Press","Full range, slow eccentric","4 × 12"],
+    ["Tricep Overhead Ext.","One brick, both hands overhead","3 × 15"],
+    ["Plank to Push-up","Alternate forearm to full plank","3 × 10"]
+   ],rest:"45 sec/set · 90 sec between exercises"},
+   E:{title:"Arms & Abs Finisher",focus:"Biceps · Core · Cardio",badge:"evening",ex:[
+    ["Brick Curls 21s","7 low + 7 high + 7 full range","3 × 21"],
+    ["Concentration Curls","Elbow on thigh, full squeeze","3 × 12 each"],
+    ["V-Sit Hold","Balance on tailbone, legs up","3 × 30 sec"],
+    ["Flutter Kicks","Low, alternating leg kicks","3 × 40 sec"],
+    ["Jump Rope / Shadow","Quick feet, light landings","3 × 1 min"]
+   ],rest:"30 sec/set · Push the intensity"},
+  },
+  {day:"Sat",label:"Legs + HIIT",intensity:"high",
+   M:{title:"Leg Power",focus:"Quads · Glutes · Hamstrings",badge:"morning",ex:[
+    ["Bulgarian Split Squat","Rear foot on chair, deep dip","3 × 10 each"],
+    ["Sumo Squats","Wide stance, toes out, deep","4 × 15"],
+    ["Step-ups","Chair or step, alternate legs","3 × 12 each"],
+    ["Donkey Kicks","All fours, kick back and squeeze","3 × 15 each"],
+    ["Wall Sit","Thighs parallel to floor, hold","3 × 45 sec"]
+   ],rest:"60 sec/set · 90 sec between exercises"},
+   E:{title:"HIIT Cardio Blast",focus:"Fat Burn · Stamina · Power",badge:"evening",ex:[
+    ["Burpee + Push-up","Full burpee with push-up","4 × 8"],
+    ["Speed Skaters","Lateral bound, alternate sides","3 × 40 sec"],
+    ["Jump Squats","Deep squat, explosive jump","3 × 12"],
+    ["Push-up + Row","Push-up then row each arm","3 × 8"],
+    ["Bear Crawl","Forward and back 5m each way","3 × 30 sec"]
+   ],rest:"20 sec between · 60 sec between exercises"},
+  },
+  {day:"Sun",label:"Full Body (Light)",intensity:"med",
+   M:{title:"Compound Flow",focus:"Full Body · Easy Pace · Form",badge:"morning",ex:[
+    ["Squat + Press","Squat down, press bricks up at top","3 × 10"],
+    ["Push-up + Shoulder Tap","Push-up then tap each shoulder","3 × 8"],
+    ["Lunge + Curl","Lunge step, curl bricks at bottom","3 × 8 each"],
+    ["Plank Rows","In plank, row each brick slow","3 × 8 each"],
+    ["Glute Bridge + Press","Bridge up and press bricks","3 × 10"]
+   ],rest:"60 sec/set · Easy pace, focus on form"},
+   E:{title:"Wind Down & Stretch",focus:"Flexibility · Recovery · Breathing",badge:"evening",ex:[
+    ["Child's Pose","Hold 60 sec, breathe deeply","2 × 60 sec"],
+    ["Hip Flexor Stretch","Low lunge each side","2 × 45 sec each"],
+    ["Chest Opener","Arms wide, arch back gently","2 × 45 sec"],
+    ["Seated Hamstring Stretch","Reach for toes, hold steady","2 × 45 sec each"],
+    ["Neck & Shoulder Rolls","Slow circles each direction","2 × 30 sec each"]
+   ],rest:"No rest · Hold each stretch · End your week easy"},
+  }
+];
+
+let active=0;
+function iInfo(l){
+  const m={high:['var(--dot-hi)','High intensity'],med:['var(--dot-med)','Medium intensity — lighter pace today'],low:['var(--dot-lo)','Low intensity — active recovery day']};
+  return`<span class="idot" style="background:${m[l][0]}"></span>${m[l][1]}`;
+}
+function sCard(s){
+  return`<div class="sc">
+    <div class="sc-head">
+      <span class="sbadge ${s.badge}">${s.badge} session</span>
+      <div class="sc-title">${s.title}</div>
+      <div class="sc-focus">${s.focus}</div>
+    </div>
+    ${s.ex.map(([n,d,sets])=>`<div class="exrow"><div><div class="ex-n">${n}</div><div class="ex-d">${d}</div></div><div class="ex-s">${sets}</div></div>`).join('')}
+    <div class="sc-foot">${s.rest}</div>
+  </div>`;
+}
+function render(){
+  document.getElementById('tabs').innerHTML=P.map((d,i)=>`<button class="dtab${i===active?' active':''}" onclick="go(${i})"><span class="dn">${d.day}</span><span class="dl">${d.label}</span></button>`).join('');
+  const d=P[active];
+  document.getElementById('irow').innerHTML=iInfo(d.intensity);
+  document.getElementById('runrib').textContent='Run your 5 km · '+(d.intensity==='low'?'before mobility work':'before or after sessions');
+  const c=document.getElementById('content');
+  c.className='fade';
+  c.innerHTML=`<div class="sg">${sCard(d.M)}${sCard(d.E)}</div>`;
+}
+function go(i){active=i;render()}
+render();
+
+let theme='dark';
+function toggleTheme(){
+  theme=theme==='dark'?'bw':'dark';
+  document.documentElement.setAttribute('data-theme',theme);
+  document.getElementById('tlabel').textContent=theme==='dark'?'DARK':'B & W';
+}
+</script>
+</body>
+</html>
